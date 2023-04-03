@@ -15,6 +15,8 @@ public class Homepage extends javax.swing.JFrame {
      */
     public Homepage() {
         initComponents();
+        setTitle("Connect 4");
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -27,8 +29,8 @@ public class Homepage extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        findMatchBtn = new javax.swing.JButton();
-        startMatchBtn = new javax.swing.JButton();
+        joinGameBtn = new javax.swing.JButton();
+        newGameBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -36,22 +38,27 @@ public class Homepage extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(52, 53, 64));
 
-        findMatchBtn.setBackground(new java.awt.Color(62, 63, 74));
-        findMatchBtn.setForeground(new java.awt.Color(255, 255, 255));
-        findMatchBtn.setText("Find Match");
-        findMatchBtn.setBorder(null);
-        findMatchBtn.addActionListener(new java.awt.event.ActionListener() {
+        joinGameBtn.setBackground(new java.awt.Color(62, 63, 74));
+        joinGameBtn.setForeground(new java.awt.Color(255, 255, 255));
+        joinGameBtn.setText("Join Game");
+        joinGameBtn.setBorder(null);
+        joinGameBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                findMatchBtnActionPerformed(evt);
+                joinGameBtnActionPerformed(evt);
             }
         });
 
-        startMatchBtn.setBackground(new java.awt.Color(62, 63, 74));
-        startMatchBtn.setForeground(new java.awt.Color(255, 255, 255));
-        startMatchBtn.setText("Start Match");
-        startMatchBtn.setBorder(null);
+        newGameBtn.setBackground(new java.awt.Color(62, 63, 74));
+        newGameBtn.setForeground(new java.awt.Color(255, 255, 255));
+        newGameBtn.setText("New Game");
+        newGameBtn.setBorder(null);
+        newGameBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newGameBtnActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setFont(new java.awt.Font("Franklin Gothic Heavy", 1, 95)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Franklin Gothic Heavy", 1, 104)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(204, 0, 51));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("4");
@@ -76,21 +83,21 @@ public class Homepage extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(273, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(findMatchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(startMatchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(joinGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(newGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(273, 273, 273))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(82, Short.MAX_VALUE)
+                .addContainerGap(72, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1))
                 .addGap(82, 82, 82)
-                .addComponent(startMatchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(newGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(findMatchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(joinGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(135, 135, 135))
         );
 
@@ -108,9 +115,15 @@ public class Homepage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void findMatchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findMatchBtnActionPerformed
+    private void joinGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinGameBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_findMatchBtnActionPerformed
+        new JoinGameWindow().setVisible(true);
+    }//GEN-LAST:event_joinGameBtnActionPerformed
+    
+    private void newGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameBtnActionPerformed
+        // TODO add your handling code here:
+        new NewGameWindow().setVisible(true);
+    }//GEN-LAST:event_newGameBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,10 +161,10 @@ public class Homepage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton findMatchBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton startMatchBtn;
+    private javax.swing.JButton joinGameBtn;
+    private javax.swing.JButton newGameBtn;
     // End of variables declaration//GEN-END:variables
 }
