@@ -27,8 +27,8 @@ public class Homepage extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        findMatchBtn = new javax.swing.JButton();
+        startMatchBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -36,20 +36,20 @@ public class Homepage extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(52, 53, 64));
 
-        jButton1.setBackground(new java.awt.Color(62, 63, 74));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Find Match");
-        jButton1.setBorder(null);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        findMatchBtn.setBackground(new java.awt.Color(62, 63, 74));
+        findMatchBtn.setForeground(new java.awt.Color(255, 255, 255));
+        findMatchBtn.setText("Find Match");
+        findMatchBtn.setBorder(null);
+        findMatchBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                findMatchBtnActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(62, 63, 74));
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Start Match");
-        jButton2.setBorder(null);
+        startMatchBtn.setBackground(new java.awt.Color(62, 63, 74));
+        startMatchBtn.setForeground(new java.awt.Color(255, 255, 255));
+        startMatchBtn.setText("Start Match");
+        startMatchBtn.setBorder(null);
 
         jLabel1.setFont(new java.awt.Font("Franklin Gothic Heavy", 1, 95)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(204, 0, 51));
@@ -76,8 +76,8 @@ public class Homepage extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(273, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(findMatchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(startMatchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(273, 273, 273))
         );
         jPanel1Layout.setVerticalGroup(
@@ -88,9 +88,9 @@ public class Homepage extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabel1))
                 .addGap(82, 82, 82)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(startMatchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(findMatchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(135, 135, 135))
         );
 
@@ -108,9 +108,9 @@ public class Homepage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void findMatchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findMatchBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_findMatchBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,10 +148,10 @@ public class Homepage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton findMatchBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton startMatchBtn;
     // End of variables declaration//GEN-END:variables
 }
