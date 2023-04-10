@@ -18,6 +18,7 @@ import java.net.Socket;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+// Grid for the game board
 public class Grid {
 
     JFrame frame;
