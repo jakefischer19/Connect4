@@ -44,18 +44,45 @@ class Game {
      */
     Player currentPlayer;
 
-//    public boolean checkForWinner(int x, int y) {
-//        
-//    }
+    public boolean checkForWinner(int x, int y) {
+        int count = 0;
+        System.out.println(currentPlayer.color.toString());
+        // Horizontal win check
+        for (int i = 0; i < cols; i++) {
+            if (board[y][i] == currentPlayer.opponent.color) {
+                count++;
+            } else {
+                count = 0;
+            }
+
+            if (count == 4) {
+                return true;
+            }
+        }
+
+        // Vertical win check
+        for (int i = 0; i < rows; i++) {
+            if (board[i][x] == currentPlayer.opponent.color) {
+                count++;
+            } else {
+                count = 0;
+            }
+
+            if (count == 4) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Returns whether there are no more empty squares.
      */
     public boolean boardFull() {
-        for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[row].length; col++) {
-                if (board[row][col] == new Color(255, 255, 255)) {
-                    return false;
-                }
+        for (int col = 0; col < board[0].length; col++) {
+            if (board[0][col] == null) {
+                return false;
             }
         }
         return true;
@@ -67,7 +94,6 @@ class Game {
      * full, returns false
      */
     public synchronized boolean isValidMove(int x, int y, Player player) {
-        System.out.println(board[0][x]);
         if (player == currentPlayer && board[0][x] == null) {
             board[y][x] = currentPlayer.color;
             currentPlayer = currentPlayer.opponent;
@@ -116,7 +142,7 @@ class Game {
          */
         public void otherPlayerMoved(int x, int y) {
             output.println("OPPONENT_MOVED " + x + y);
-            //output.println(checkForWinner(x, y) ? "DEFEAT" : boardFull() ? "TIE" : "");
+            output.println(checkForWinner(x, y) ? "DEFEAT" : boardFull() ? "TIE" : "");
         }
 
         /**
@@ -141,7 +167,7 @@ class Game {
                         int y = Integer.parseInt(command.substring(6));
                         if (isValidMove(x, y, this)) {
                             output.println("VALID_MOVE " + x + y);
-                            //output.println(checkForWinner(x, y) ? "VICTORY" : boardFull() ? "TIE" : "");
+                            output.println(checkForWinner(x, y) ? "VICTORY" : boardFull() ? "TIE" : "");
                         } else {
                             output.println("MESSAGE ?");
                         }
