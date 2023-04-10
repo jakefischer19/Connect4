@@ -9,10 +9,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- *
- * @author jakef
- */
 public class GameServer {
 
     private static final int PORT = 8901;
