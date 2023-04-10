@@ -9,10 +9,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- *
- * @author jakef
- */
 public class GameServer {
 
     private static final int PORT = 8901;
@@ -23,10 +19,10 @@ public class GameServer {
         try {
             while (true) {
                 Game game = new Game();
-                Game.Player player1 = game.new Player(listener.accept(), '1');
-                Game.Player player2 = game.new Player(listener.accept(), '2');
-                player1.setOpponent(player1);
-                player2.setOpponent(player2);
+                Game.Player player1 = game.new Player(listener.accept(), '1', new Color(255, 0, 0));
+                Game.Player player2 = game.new Player(listener.accept(), '2', new Color(255, 255, 0));
+                player1.setOpponent(player2);
+                player2.setOpponent(player1);
                 game.currentPlayer = player1;
                 player1.start();
                 player2.start();
@@ -67,8 +63,8 @@ class Game {
 
     /**
      * Checks whether a players move is valid or not. If the column that the
-     * player clicks in contains any blank spots it returns true. If that column
-     * is full, returns false
+     * player clicks contains any blank spots it returns true. If that column is
+     * full, returns false
      */
     public synchronized boolean isValidMove(int x, int y, Player player) {
         System.out.println(board[0][x]);
@@ -94,10 +90,10 @@ class Game {
          * Constructs a handler thread for a given socket and mark initializes
          * the stream fields, displays the first two welcoming messages.
          */
-        public Player(Socket socket, char mark) {
+        public Player(Socket socket, char mark, Color color) {
             this.socket = socket;
             this.mark = mark;
-            this.color = (mark == '1' ? new Color(255, 0, 0) : new Color(255, 255, 0));
+            this.color = color;
             try {
                 input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 output = new PrintWriter(socket.getOutputStream(), true);
@@ -144,7 +140,7 @@ class Game {
                         int x = Integer.parseInt(command.substring(5, 6));
                         int y = Integer.parseInt(command.substring(6));
                         if (isValidMove(x, y, this)) {
-                            output.println("VALID_MOVE");
+                            output.println("VALID_MOVE " + x + y);
                             //output.println(checkForWinner(x, y) ? "VICTORY" : boardFull() ? "TIE" : "");
                         } else {
                             output.println("MESSAGE ?");

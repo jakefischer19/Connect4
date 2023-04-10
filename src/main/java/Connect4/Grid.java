@@ -18,6 +18,7 @@ import java.net.Socket;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+// Grid for the game board
 public class Grid {
 
     JFrame frame;
@@ -50,6 +51,7 @@ public class Grid {
         frame.getContentPane().add(messageLabel, "South");
         frame.pack();
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 
     public static void main(String... argv) throws Exception {
@@ -76,7 +78,7 @@ public class Grid {
                 if (response.startsWith("VALID_MOVE")) {
                     int x = Integer.parseInt(response.substring(11, 12));
                     int y = Integer.parseInt(response.substring(12));
-                    temp.grid[y][x] = color;
+                    temp.grid[y][x] = this.color;
                     temp.repaint();
                     messageLabel.setText("Valid move, please wait");
                 } else if (response.startsWith("OPPONENT_MOVED")) {
