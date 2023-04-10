@@ -4,6 +4,9 @@
  */
 package Connect4;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author jakef
@@ -29,8 +32,7 @@ public class Homepage extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        joinGameBtn = new javax.swing.JButton();
-        newGameBtn = new javax.swing.JButton();
+        findGameBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -38,23 +40,13 @@ public class Homepage extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(52, 53, 64));
 
-        joinGameBtn.setBackground(new java.awt.Color(62, 63, 74));
-        joinGameBtn.setForeground(new java.awt.Color(255, 255, 255));
-        joinGameBtn.setText("Join Game");
-        joinGameBtn.setBorder(null);
-        joinGameBtn.addActionListener(new java.awt.event.ActionListener() {
+        findGameBtn.setBackground(new java.awt.Color(62, 63, 74));
+        findGameBtn.setForeground(new java.awt.Color(255, 255, 255));
+        findGameBtn.setText("Find Game");
+        findGameBtn.setBorder(null);
+        findGameBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                joinGameBtnActionPerformed(evt);
-            }
-        });
-
-        newGameBtn.setBackground(new java.awt.Color(62, 63, 74));
-        newGameBtn.setForeground(new java.awt.Color(255, 255, 255));
-        newGameBtn.setText("New Game");
-        newGameBtn.setBorder(null);
-        newGameBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newGameBtnActionPerformed(evt);
+                findGameBtnActionPerformed(evt);
             }
         });
 
@@ -79,26 +71,22 @@ public class Homepage extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(31, 31, 31)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(159, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(273, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(joinGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(273, 273, 273))
+                .addContainerGap(283, Short.MAX_VALUE)
+                .addComponent(findGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(282, 282, 282))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(72, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1))
-                .addGap(82, 82, 82)
-                .addComponent(newGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(joinGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(135, 135, 135))
+                .addGap(119, 119, 119)
+                .addComponent(findGameBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(189, 189, 189))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -109,21 +97,20 @@ public class Homepage extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void joinGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinGameBtnActionPerformed
-        // TODO add your handling code here:
-        new JoinGameWindow().setVisible(true);
-    }//GEN-LAST:event_joinGameBtnActionPerformed
-    
-    private void newGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameBtnActionPerformed
-        // TODO add your handling code here:
-        new NewGameWindow().setVisible(true);
-    }//GEN-LAST:event_newGameBtnActionPerformed
+    private void findGameBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findGameBtnActionPerformed
+        try {
+            Grid client = new Grid("localhost");
+            client.main(new String[0]);
+        } catch (Exception ex) {
+            Logger.getLogger(Homepage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_findGameBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -161,10 +148,9 @@ public class Homepage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton findGameBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton joinGameBtn;
-    private javax.swing.JButton newGameBtn;
     // End of variables declaration//GEN-END:variables
 }
