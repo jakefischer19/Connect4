@@ -22,7 +22,7 @@ import javax.swing.JLabel;
 public class Grid {
 
     JFrame frame;
-    MultiDraw temp;
+    MultiDraw gameBoard;
     private JLabel messageLabel = new JLabel("");
     private Color color;
     private Color opponentColor;
@@ -44,17 +44,17 @@ public class Grid {
 
         frame = new JFrame("Connect 4");
         frame.setSize(750, 660);
-        temp = new MultiDraw(frame.getSize());
+        gameBoard = new MultiDraw(frame.getSize());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(frame.getSize());
-        frame.add(temp);
+        frame.add(gameBoard);
         frame.getContentPane().add(messageLabel, "South");
         frame.pack();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
 
-    public static void main(String... argv) throws Exception {
+    public static void main(String[] args) throws Exception {
         Grid client = new Grid("localhost");
         client.play();
 //        if (!client.wantsToPlayAgain()) {
@@ -78,14 +78,14 @@ public class Grid {
                 if (response.startsWith("VALID_MOVE")) {
                     int x = Integer.parseInt(response.substring(11, 12));
                     int y = Integer.parseInt(response.substring(12));
-                    temp.grid[y][x] = this.color;
-                    temp.repaint();
+                    gameBoard.grid[y][x] = this.color;
+                    gameBoard.repaint();
                     messageLabel.setText("Valid move, please wait");
                 } else if (response.startsWith("OPPONENT_MOVED")) {
                     int x = Integer.parseInt(response.substring(15, 16));
                     int y = Integer.parseInt(response.substring(16));
-                    temp.grid[y][x] = opponentColor;
-                    temp.repaint();
+                    gameBoard.grid[y][x] = opponentColor;
+                    gameBoard.repaint();
                     messageLabel.setText("Opponent moved, your turn");
                 } else if (response.startsWith("VICTORY")) {
                     messageLabel.setText("You win");
@@ -150,12 +150,6 @@ public class Grid {
                 startY += cellDiameter;
             }
             g2.setColor(new Color(255, 255, 255));
-
-//            if (turn % 2 == 0) {
-//                g2.drawString("Red's Turn", 800, 20);
-//            } else {
-//                g2.drawString("Yellow's Turn", 800, 20);
-//            }
         }
 
         public void mousePressed(MouseEvent e) {
