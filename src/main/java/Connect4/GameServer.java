@@ -46,10 +46,10 @@ class Game {
 
     public boolean checkForWinner(int x, int y) {
         int count = 0;
-        System.out.println(currentPlayer.color.toString());
+        Color curColor = currentPlayer.opponent.color;
         // Horizontal win check
         for (int i = 0; i < cols; i++) {
-            if (board[y][i] == currentPlayer.opponent.color) {
+            if (board[y][i] == curColor) {
                 count++;
             } else {
                 count = 0;
@@ -59,10 +59,11 @@ class Game {
                 return true;
             }
         }
+        count = 0;
 
         // Vertical win check
         for (int i = 0; i < rows; i++) {
-            if (board[i][x] == currentPlayer.opponent.color) {
+            if (board[i][x] == curColor) {
                 count++;
             } else {
                 count = 0;
@@ -70,6 +71,77 @@ class Game {
 
             if (count == 4) {
                 return true;
+            }
+        }
+        count = 0;
+
+        // Diagonal win Check
+        // Ascending Diagonal
+        int row = y;
+        int col = x;
+
+        // Down and left
+        while (board[row][col] == curColor) {
+            count++;
+            if (count == 4) {
+                return true;
+            }
+            if (row == rows - 1 || col == 0) {
+                break;
+            }
+            row++;
+            col--;
+        }
+
+        // Up and right
+        if (x != cols - 1 && y != 0) {
+            row = y - 1;
+            col = x + 1;
+            while (board[row][col] == curColor) {
+                count++;
+                if (count == 4) {
+                    return true;
+                }
+                if (row == 0 || col == cols - 1) {
+                    break;
+                }
+                row--;
+                col++;
+            }
+        }
+        count = 0;
+
+        // Descending Diagonal
+        // Down and right
+        row = y;
+        col = x;
+
+        while (board[row][col] == curColor) {
+            count++;
+            if (count == 4) {
+                return true;
+            }
+            if (row == rows - 1 || col == cols - 1) {
+                break;
+            }
+            row++;
+            col++;
+        }
+
+        // Up and left
+        if (x != 0 && y != 0) {
+            row = y - 1;
+            col = x - 1;
+            while (board[row][col] == curColor) {
+                count++;
+                if (count == 4) {
+                    return true;
+                }
+                if (row == 0 || col == 0) {
+                    break;
+                }
+                row--;
+                col--;
             }
         }
 
@@ -161,7 +233,6 @@ class Game {
                 // Repeatedly get commands from the client and process them.
                 while (true) {
                     String command = input.readLine();
-                    System.out.println(command);
                     if (command.startsWith("MOVE")) {
                         int x = Integer.parseInt(command.substring(5, 6));
                         int y = Integer.parseInt(command.substring(6));
