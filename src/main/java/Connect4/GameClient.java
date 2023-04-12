@@ -10,27 +10,26 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
-// Grid for the game board
-public class Grid {
+public class GameClient {
 
     JFrame frame;
     JPanel board;
     JPanel panel;
-    MultiDraw temp;
+    DrawGameBoard drawBoard;
     private JLabel messageLabel = new JLabel("");
     private Color color;
     private Color opponentColor;
@@ -45,19 +44,20 @@ public class Grid {
     private BufferedReader in;
     private static PrintWriter out;
 
-    public Grid(String serverAddress) throws Exception {
+    public GameClient(String serverAddress) throws Exception {
 
         // Setup Networking
         socket = new Socket(serverAddress, PORT);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
-        
+
+        // Build game client window
         frame = new JFrame("Connect 4");
         frame.setSize(740, 800);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(frame.getSize());
         frame.setResizable(false);
-        
+
         panel = new JPanel();
         panel.setBackground(new Color(52, 53, 64));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // changed layout manager
@@ -85,17 +85,17 @@ public class Grid {
 
         panel.add(titlePanel); // add nested panel to main panel
         panel.add(Box.createRigidArea(new Dimension(0, 5))); // added spacing between title and board
-        
+
         frame.add(panel);
-        
-        temp = new MultiDraw(frame.getSize());
-        
+
+        drawBoard = new DrawGameBoard(frame.getSize());
+
         board = new JPanel();
         board.setBorder(BorderFactory.createEmptyBorder(0, 38, 0, 0));
         board.setBackground(new Color(52, 53, 64));
-        board.add(temp);
+        board.add(drawBoard);
         panel.add(board);
-        
+
         // Set up info label for turn and win conditions
         JPanel info = new JPanel();
         info.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 5));
@@ -103,21 +103,28 @@ public class Grid {
         messageLabel.setFont(new Font("Segui UI", Font.BOLD, 24));
         messageLabel.setForeground(Color.WHITE);
         info.add(messageLabel, BorderLayout.SOUTH);
-        
+
         frame.getContentPane().add(info, "South");
         frame.pack();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
 
-    public static void main(String... argv) throws Exception {
-        Grid client = new Grid("localhost");
-        client.play();
-//        if (!client.wantsToPlayAgain()) {
-//            break;
-//        }
+    public static void main(String[] args) throws Exception {
+        while (true) {
+            GameClient client = new GameClient("localhost");
+            client.play();
+            if (!client.wantsToPlayAgain()) {
+                break;
+            }
+        }
     }
 
+    /**
+     * The main client game loop. Each client will be assigned a mark and a
+     * color upon connection to the server. The client continually loops and
+     * listens for messages from the server.
+     */
     public void play() throws Exception {
         String response;
         try {
@@ -130,24 +137,25 @@ public class Grid {
             }
             while (true) {
                 response = in.readLine();
-                System.out.println(response);
                 if (response.startsWith("VALID_MOVE")) {
                     int x = Integer.parseInt(response.substring(11, 12));
                     int y = Integer.parseInt(response.substring(12));
-                    temp.grid[y][x] = this.color;
-                    temp.repaint();
-                    messageLabel.setText("Valid move, please wait");
+                    drawBoard.grid[y][x] = this.color;
+                    drawBoard.repaint();
+                    messageLabel.setText("Valid move, wait for opponent");
                 } else if (response.startsWith("OPPONENT_MOVED")) {
                     int x = Integer.parseInt(response.substring(15, 16));
                     int y = Integer.parseInt(response.substring(16));
-                    temp.grid[y][x] = opponentColor;
-                    temp.repaint();
+                    drawBoard.grid[y][x] = opponentColor;
+                    drawBoard.repaint();
                     messageLabel.setText("Opponent moved, your turn");
                 } else if (response.startsWith("VICTORY")) {
                     messageLabel.setText("You win");
+                    messageLabel.setForeground(Color.green);
                     break;
                 } else if (response.startsWith("DEFEAT")) {
                     messageLabel.setText("You lose");
+                    messageLabel.setForeground(Color.red);
                     break;
                 } else if (response.startsWith("TIE")) {
                     messageLabel.setText("You tied");
@@ -162,7 +170,23 @@ public class Grid {
         }
     }
 
-    public static class MultiDraw extends JPanel implements MouseListener {
+    /**
+     * Creates dialog window that confirms whether or not each player wants to
+     * play a new game.
+     */
+    private boolean wantsToPlayAgain() {
+        UIManager um = new UIManager();
+        um.put("OptionPane.background", new ColorUIResource(52, 53, 64));
+        um.put("Panel.background", new ColorUIResource(52, 53, 64));
+        um.put("OptionPane.messageForeground", Color.white);
+        int response = JOptionPane.showConfirmDialog(frame, "Want to play again?",
+                "New Game?", JOptionPane.YES_NO_OPTION);
+        frame.dispose();
+        return response == JOptionPane.YES_OPTION;
+    }
+
+    // Class that handles the creation of the game grid.
+    public static class DrawGameBoard extends JPanel implements MouseListener {
 
         int startX = 10;
         int startY = 10;
@@ -173,12 +197,12 @@ public class Grid {
 
         Color[][] grid = new Color[rows][cols];
 
-        public MultiDraw(Dimension dimension) {
+        public DrawGameBoard(Dimension dimension) {
             setSize(dimension);
             setPreferredSize(dimension);
             addMouseListener(this);
-            //1. initialize array here
-            int x = 0;
+
+            // Initialize the grid with the default color of white.
             for (int row = 0; row < grid.length; row++) {
                 for (int col = 0; col < grid[0].length; col++) {
                     grid[row][col] = new Color(255, 255, 255);
@@ -195,7 +219,7 @@ public class Grid {
             startX = 0;
             startY = 0;
 
-            //2) draw grid here
+            // Draws the game board on for the client
             for (int row = 0; row < grid.length; row++) {
                 for (int col = 0; col < grid[0].length; col++) {
                     g2.setColor(grid[row][col]);
@@ -205,15 +229,14 @@ public class Grid {
                 startX = 0;
                 startY += cellDiameter;
             }
-            g2.setColor(new Color(255, 255, 255));
-
-//            if (turn % 2 == 0) {
-//                g2.drawString("Red's Turn", 800, 20);
-//            } else {
-//                g2.drawString("Yellow's Turn", 800, 20);
-//            }
         }
 
+        /**
+         * Gets the x and y position of a players mouse click. The x and y are
+         * divided by the diameter of a board cell to get the row and column
+         * that the player clicked in. The final row and column indexes are sent
+         * to the server with a MOVE message.
+         */
         public void mousePressed(MouseEvent e) {
             int x = e.getX();
             int y = e.getY();
@@ -223,15 +246,15 @@ public class Grid {
             cellY = checkForOpenCell(cellX);
 
             out.println("MOVE " + cellX + cellY);
-
-//            if (mark == '1') {
-//                grid[cellY][cellX] = Color.red;
-//            } else {
-//                grid[cellY][cellX] = Color.yellow;
-//            }
-//            repaint();
         }
 
+        /**
+         * Checks the column in which a player clicked for the first non
+         * occupied cell.
+         *
+         * @param cellX
+         * @return row index in which the next piece should be placed
+         */
         public int checkForOpenCell(int cellX) {
             int cellY = rows - 1;
 
