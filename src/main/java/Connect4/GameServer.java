@@ -1,7 +1,6 @@
 package Connect4;
 
 import java.awt.Color;
-import java.net.ServerSocket;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,8 +18,10 @@ public class GameServer {
         try {
             while (true) {
                 Game game = new Game();
-                Game.Player player1 = game.new Player(listener.accept(), '1', new Color(255, 0, 0));
-                Game.Player player2 = game.new Player(listener.accept(), '2', new Color(255, 255, 0));
+                Game.Player player1 = game.new Player(listener.accept(),
+                        '1', new Color(255, 0, 0));
+                Game.Player player2 = game.new Player(listener.accept(),
+                        '2', new Color(255, 255, 0));
                 player1.setOpponent(player2);
                 player2.setOpponent(player1);
                 game.currentPlayer = player1;
@@ -39,11 +40,19 @@ class Game {
     int cols = 7;
 
     private Color[][] board = new Color[rows][cols];
-    /**
-     * The current player.
-     */
+
     Player currentPlayer;
 
+    /**
+     * Called when a player makes a move. Checks to see if the move results in a
+     * win. Takes in the row and column indexes of a move and tests for 4 pieces
+     * in a row on vertical, horizontal, ascending diagonal, and descending
+     * diagonal.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean checkForWinner(int x, int y) {
         int count = 0;
         Color curColor = currentPlayer.opponent.color;
@@ -149,7 +158,8 @@ class Game {
     }
 
     /**
-     * Returns whether there are no more empty squares.
+     * Checks whether or not there are any available cells for a player to make
+     * a move
      */
     public boolean boardFull() {
         for (int col = 0; col < board[0].length; col++) {
@@ -202,15 +212,18 @@ class Game {
             }
         }
 
-        /**
-         * Accepts notification of who the opponent is.
-         */
+        // Used to set the opponent of each player.
         public void setOpponent(Player opponent) {
             this.opponent = opponent;
         }
 
         /**
-         * Handles the otherPlayerMoved message.
+         * Called when a player makes a move. A message containing the row and
+         * column indexes of where the current player placed a piece is sent to
+         * the opposing player for processing.
+         *
+         * @param x
+         * @param y
          */
         public void otherPlayerMoved(int x, int y) {
             output.println("OPPONENT_MOVED " + x + y);
@@ -225,12 +238,16 @@ class Game {
                 // The thread is only started after everyone connects.
                 output.println("MESSAGE All players connected");
 
-                // Tell the first player that it is her turn.
+                // Tell the first player that it is their turn.
                 if (mark == '1') {
                     output.println("MESSAGE Your move");
                 }
 
-                // Repeatedly get commands from the client and process them.
+                /**
+                 * Loop that constantly reads messages from clients and
+                 * processes them. The x and y values are extracted from MOVE
+                 * messages and passed into the checkForWinner function.
+                 */
                 while (true) {
                     String command = input.readLine();
                     if (command.startsWith("MOVE")) {
@@ -240,7 +257,7 @@ class Game {
                             output.println("VALID_MOVE " + x + y);
                             output.println(checkForWinner(x, y) ? "VICTORY" : boardFull() ? "TIE" : "");
                         } else {
-                            output.println("MESSAGE ?");
+                            output.println("MESSAGE Please wait for your turn.");
                         }
                     } else if (command.startsWith("QUIT")) {
                         return;
