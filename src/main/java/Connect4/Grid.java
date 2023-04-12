@@ -1,10 +1,13 @@
 package Connect4;
 
+import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -15,6 +18,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -22,10 +28,14 @@ import javax.swing.JLabel;
 public class Grid {
 
     JFrame frame;
-    MultiDraw gameBoard;
+    JPanel board;
+    JPanel panel;
+    MultiDraw temp;
     private JLabel messageLabel = new JLabel("");
     private Color color;
     private Color opponentColor;
+    private JLabel title = new JLabel("");
+    private JLabel four = new JLabel("");
     Color red = new Color(255, 0, 0);
     Color yellow = new Color(255, 255, 0);
     static char mark;
@@ -41,20 +51,66 @@ public class Grid {
         socket = new Socket(serverAddress, PORT);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
-
+        
         frame = new JFrame("Connect 4");
-        frame.setSize(750, 660);
-        gameBoard = new MultiDraw(frame.getSize());
+        frame.setSize(740, 800);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(frame.getSize());
-        frame.add(gameBoard);
-        frame.getContentPane().add(messageLabel, "South");
+        frame.setResizable(false);
+        
+        panel = new JPanel();
+        panel.setBackground(new Color(52, 53, 64));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // changed layout manager
+
+        title.setOpaque(true);
+        title.setFont(new java.awt.Font("Franklin Gothic Heavy", 1, 75));
+        title.setForeground(new Color(255, 255, 255));
+        title.setBackground(new Color(52, 53, 64));
+        title.setText("Connect");
+        title.setToolTipText("");
+
+        four.setFont(new java.awt.Font("Franklin Gothic Heavy", 1, 94));
+        four.setForeground(new Color(204, 0, 51));
+        four.setBackground(new Color(52, 53, 64));
+        four.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        four.setText("4");
+        four.setToolTipText("");
+
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS)); // horizontal layout
+        titlePanel.setOpaque(false); // make background transparent
+        titlePanel.add(title);
+        titlePanel.add(Box.createRigidArea(new Dimension(20, 0))); // add spacing between title and four
+        titlePanel.add(four);
+
+        panel.add(titlePanel); // add nested panel to main panel
+        panel.add(Box.createRigidArea(new Dimension(0, 5))); // added spacing between title and board
+        
+        frame.add(panel);
+        
+        temp = new MultiDraw(frame.getSize());
+        
+        board = new JPanel();
+        board.setBorder(BorderFactory.createEmptyBorder(0, 38, 0, 0));
+        board.setBackground(new Color(52, 53, 64));
+        board.add(temp);
+        panel.add(board);
+        
+        // Set up info label for turn and win conditions
+        JPanel info = new JPanel();
+        info.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 5));
+        info.setBackground(new Color(52, 53, 64));
+        messageLabel.setFont(new Font("Segui UI", Font.BOLD, 24));
+        messageLabel.setForeground(Color.WHITE);
+        info.add(messageLabel, BorderLayout.SOUTH);
+        
+        frame.getContentPane().add(info, "South");
         frame.pack();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String... argv) throws Exception {
         Grid client = new Grid("localhost");
         client.play();
 //        if (!client.wantsToPlayAgain()) {
@@ -78,14 +134,14 @@ public class Grid {
                 if (response.startsWith("VALID_MOVE")) {
                     int x = Integer.parseInt(response.substring(11, 12));
                     int y = Integer.parseInt(response.substring(12));
-                    gameBoard.grid[y][x] = this.color;
-                    gameBoard.repaint();
+                    temp.grid[y][x] = this.color;
+                    temp.repaint();
                     messageLabel.setText("Valid move, please wait");
                 } else if (response.startsWith("OPPONENT_MOVED")) {
                     int x = Integer.parseInt(response.substring(15, 16));
                     int y = Integer.parseInt(response.substring(16));
-                    gameBoard.grid[y][x] = opponentColor;
-                    gameBoard.repaint();
+                    temp.grid[y][x] = opponentColor;
+                    temp.repaint();
                     messageLabel.setText("Opponent moved, your turn");
                 } else if (response.startsWith("VICTORY")) {
                     messageLabel.setText("You win");
@@ -150,6 +206,12 @@ public class Grid {
                 startY += cellDiameter;
             }
             g2.setColor(new Color(255, 255, 255));
+
+//            if (turn % 2 == 0) {
+//                g2.drawString("Red's Turn", 800, 20);
+//            } else {
+//                g2.drawString("Yellow's Turn", 800, 20);
+//            }
         }
 
         public void mousePressed(MouseEvent e) {
