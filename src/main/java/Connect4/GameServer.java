@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class GameServer {
 
-    private static final int PORT = 8901;
+    private static final int PORT = 80;//8901;
 
     public static void main(String[] args) throws Exception {
         ServerSocket listener = new ServerSocket(PORT);
