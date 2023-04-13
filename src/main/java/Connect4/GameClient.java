@@ -39,7 +39,7 @@ public class GameClient {
     Color yellow = new Color(255, 255, 0);
     static char mark;
 
-    private static int PORT = 8901;
+    private static int PORT = 80;//8901;
     private Socket socket;
     private BufferedReader in;
     private static PrintWriter out;
@@ -112,7 +112,7 @@ public class GameClient {
 
     public static void main(String[] args) throws Exception {
         while (true) {
-            GameClient client = new GameClient("localhost");
+            GameClient client = new GameClient(args[0]);
             client.play();
             if (!client.wantsToPlayAgain()) {
                 break;
