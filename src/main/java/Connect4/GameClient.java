@@ -112,7 +112,7 @@ public class GameClient {
 
     public static void main(String[] args) throws Exception {
         while (true) {
-            GameClient client = new GameClient("localhost");
+            GameClient client = new GameClient(args[0]);
             client.play();
             if (!client.wantsToPlayAgain()) {
                 break;
