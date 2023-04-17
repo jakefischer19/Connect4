@@ -11,9 +11,12 @@ while the game GUI was built using Java Swing.
 
             - The goal of each player is to get 4 of their pieces "connected" in a continuos row before their opponent.
 
+
             - Players take turns placing pieces on the board (pieces are placed from bottom to top and will stack on top eachother).
 
+
             - The game can be won by a player getting 4 pieces in a row either vertically, horizontally, or diagonally.
+
 
             - If the board is completely filled before either player wins, the game results in a tie.
 
@@ -22,23 +25,31 @@ while the game GUI was built using Java Swing.
     
         1. First off, you will need to download the game source files and add them to a java project.
         
+        
         2. Once downloaded, you will need to create a run configuration for your java project in your IDE. I will use NetBeans as an example:
         
             - Open NetBeans and locate your Connect 4 project folder.
             
+            
             - Right click the project folder and go to - Set Configuration > Customize
+            
             
             - This will open your project properties menu. Once here, click on "Run" in the Categories menu on the left.
             
+            
             - Next, find the "Browse" button next to the "Main Class" field and select the GameClient file as your main class.
+            
             
             - Then in the "Arguments" field, you will need to enter the IP address of your server.
             
                 - if you are running your server locally on your computer, enter "localhost"
-                
+            
+            
             - Click the "OK" button and you are now ready to begin.
         
+        
         3. Next start the server and ensure that it is running.
+        
         
         4. Finally, each client will need to run their Connect 4 project to connect to the server.
         
