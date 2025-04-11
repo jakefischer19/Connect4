@@ -120,7 +120,7 @@ public class GameClient {
             // Prompt the user for the server address if not provided
             serverAddress = JOptionPane.showInputDialog(
                 null,
-                "Enter the server address:",
+                "Enter the server address ('localhost' if running locally):",
                 "Connect 4 - Server Address",
                 JOptionPane.QUESTION_MESSAGE
             );
@@ -197,10 +197,9 @@ public class GameClient {
      * play a new game.
      */
     private boolean wantsToPlayAgain() {
-        UIManager um = new UIManager();
-        um.put("OptionPane.background", new ColorUIResource(52, 53, 64));
-        um.put("Panel.background", new ColorUIResource(52, 53, 64));
-        um.put("OptionPane.messageForeground", Color.white);
+        UIManager.put("OptionPane.background", new ColorUIResource(52, 53, 64));
+        UIManager.put("Panel.background", new ColorUIResource(52, 53, 64));
+        UIManager.put("OptionPane.messageForeground", Color.white);
         int response = JOptionPane.showConfirmDialog(frame, "Want to play again?",
                 "New Game?", JOptionPane.YES_NO_OPTION);
         frame.dispose();
