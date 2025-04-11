@@ -111,8 +111,30 @@ public class GameClient {
     }
 
     public static void main(String[] args) throws Exception {
+        String serverAddress;
+    
+        // Check if args[0] is provided
+        if (args.length > 0) {
+            serverAddress = args[0];
+        } else {
+            // Prompt the user for the server address if not provided
+            serverAddress = JOptionPane.showInputDialog(
+                null,
+                "Enter the server address ('localhost' if running locally):",
+                "Connect 4 - Server Address",
+                JOptionPane.QUESTION_MESSAGE
+            );
+    
+            // Exit if the user cancels the input dialog
+            if (serverAddress == null || serverAddress.isEmpty()) {
+                System.out.println("No server address provided. Exiting...");
+                return;
+            }
+        }
+    
+        // Main game loop
         while (true) {
-            GameClient client = new GameClient(args[0]);
+            GameClient client = new GameClient(serverAddress);
             client.play();
             if (!client.wantsToPlayAgain()) {
                 break;
@@ -175,10 +197,9 @@ public class GameClient {
      * play a new game.
      */
     private boolean wantsToPlayAgain() {
-        UIManager um = new UIManager();
-        um.put("OptionPane.background", new ColorUIResource(52, 53, 64));
-        um.put("Panel.background", new ColorUIResource(52, 53, 64));
-        um.put("OptionPane.messageForeground", Color.white);
+        UIManager.put("OptionPane.background", new ColorUIResource(52, 53, 64));
+        UIManager.put("Panel.background", new ColorUIResource(52, 53, 64));
+        UIManager.put("OptionPane.messageForeground", Color.white);
         int response = JOptionPane.showConfirmDialog(frame, "Want to play again?",
                 "New Game?", JOptionPane.YES_NO_OPTION);
         frame.dispose();
